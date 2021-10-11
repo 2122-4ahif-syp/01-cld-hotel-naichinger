@@ -1,4 +1,4 @@
-= Kinokette
+= Hotelbetrieb x Kinokette
 niklas aichinger
 1.0.0, 2021-10-11
 ifndef::imagesdir[:imagesdir: images]
@@ -13,6 +13,96 @@ ifdef::backend-html5[]
 
 // print the toc here (not at the default position)
 //toc::[]
+
+== Hotelbetrieb
+
+[plantuml, hotelbetrieb-cld, png]
+----
+@startuml
+
+class Hotelzimmer {
+    - nummer: int
+    - personen: int
+    - kategorie: Kategorie
+}
+
+class Kategorie {
+    - id: int
+    - bezeichnung: String
+}
+
+class Mitarbeiter {
+    - svnr: String
+    - name: String
+    - address: String
+}
+
+class Raumpfleger {
+
+}
+
+class Betreuer {
+    - fach: String
+}
+
+class ZimmerReinigung {
+    - raumPfleger: Raumpfleger
+    - zimmer: Hotelzimmer
+}
+
+class Gast {
+    - kundennr: int
+    - name: String
+    - addresse: String
+}
+
+class Buchung {
+    - von: LocalDateTime
+    - bis: LocalDateTime
+    - kunde: Gast
+    - zimmer: Hotezimmer
+}
+
+class Leistungspaket {
+    - bezeichnung: String
+    - price: BigInteger
+}
+
+class Luxuspaket {
+}
+
+class Basispaket {
+
+}
+
+class BetreuerZuteilung {
+    - paket: Leistungspaket
+    - betreuer: Betreuer
+}
+
+class LeistungspaketBuchung {
+    - buchung: Buchung
+    - paket: Leistungspaket
+}
+
+Hotelzimmer "*" -left-> "1" Kategorie: > hat
+Raumpfleger -right-|> Mitarbeiter: > erbt
+Betreuer -down-|> Mitarbeiter: > erbt
+Hotelzimmer "*" -down-> "1" ZimmerReinigung: > wird gereinigt von
+Raumpfleger "*" -up-> "1" ZimmerReinigung: > reinigt
+Gast "1" -down-> "*" Buchung: > bucht
+Hotelzimmer "1" -up-> "*" Buchung: > wird gebucht
+Luxuspaket --|> Leistungspaket: > erbt
+Basispaket --|> Leistungspaket: > erbt
+Luxuspaket "1" -right-> "*" paketVerteilung: > enthält
+Basispaket "1" -left-> "*" paketVerteilung: > ist enthalten in
+Leistungspaket "1" -down-> "*" BetreuerZuteilung: > wird betreut
+Betreuer "1" -up-> "*" BetreuerZuteilung: > betreut
+Buchung "1" -right-> "*" LeistungspaketBuchung: > enthält
+Leistungspaket "1" -left-> "*" LeistungspaketBuchung: > ist enthalten
+
+@enduml
+----
 
 == Kinokette
 
