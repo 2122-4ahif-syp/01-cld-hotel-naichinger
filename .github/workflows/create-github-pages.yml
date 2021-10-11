@@ -40,7 +40,8 @@ jobs:
                             -a favicon=themes/favicon.png
                             -a sourcedir=src/main/java
                             -b html5
-                            
+                           
+        post_build: "git add -f *.png" 
         pdf_build: false
         # adoc_file_ext: .ascii # default is .adoc
         source_dir: ${{ github.workspace }}/asciidocs/ # default is .
